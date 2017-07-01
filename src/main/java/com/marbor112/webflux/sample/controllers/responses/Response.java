@@ -16,7 +16,7 @@ public class Response {
     }
 
     public static ResponseEntity<String> notFound(String message) {
-        String result = converter.toJson(new NotFoundResponse<>(message));
+        String result = converter.toJson(new NotFoundResponse(message));
         return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
     }
 
@@ -43,7 +43,7 @@ public class Response {
         }
     }
 
-    private static class NotFoundResponse<T> {
+    private static class NotFoundResponse {
         private final int status = HttpStatus.OK.value();
         private final String message;
 
