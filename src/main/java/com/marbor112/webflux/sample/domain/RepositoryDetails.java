@@ -1,9 +1,11 @@
 package com.marbor112.webflux.sample.domain;
 
+import lombok.Data;
+
 /**
  * Created by Marcin on 6/7/2017.
  */
-
+@Data
 public class RepositoryDetails {
     private final String fullName;
     private final String description;
@@ -18,25 +20,4 @@ public class RepositoryDetails {
         this.stars = stars;
         this.createdAt = createdAt;
     }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getCloneUrl() {
-        return cloneUrl;
-    }
-
-    public Long getStars() {
-        return stars;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
 }
