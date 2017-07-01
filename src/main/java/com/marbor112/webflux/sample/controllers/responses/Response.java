@@ -27,7 +27,6 @@ public class Response{
         return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
     }
 
-
     public static ResponseEntity<String> notFound(String message, Converter converter) {
         String result = converter.convert(new NotFoundResponse(message));
         return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
