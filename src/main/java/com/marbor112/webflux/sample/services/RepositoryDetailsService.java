@@ -16,11 +16,12 @@ import java.util.Optional;
  */
 @Service
 public class RepositoryDetailsService {
-
-    @Value("${api.url.github.repository.details}")
-    private String repositoryDetailsGithubApiUrl;
-
+    private final String repositoryDetailsGithubApiUrl;
     private final WebClient webClient = WebClient.create();
+
+    public RepositoryDetailsService(@Value("${api.url.github.repository.details}") String repositoryDetailsGithubApiUrl) {
+        this.repositoryDetailsGithubApiUrl = repositoryDetailsGithubApiUrl;
+    }
 
     @Cacheable("repositories")
     public Mono<Optional<RepositoryDetails>> retrieve(String owner, String repositoryName) {

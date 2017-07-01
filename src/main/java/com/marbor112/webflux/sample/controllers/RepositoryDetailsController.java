@@ -1,10 +1,7 @@
 package com.marbor112.webflux.sample.controllers;
 
 import com.marbor112.webflux.sample.controllers.responses.Response;
-import com.marbor112.webflux.sample.controllers.responses.RestApiMessages;
 import com.marbor112.webflux.sample.services.RepositoryDetailsService;
-import com.marbor112.webflux.sample.util.Converter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,8 +13,11 @@ import static com.marbor112.webflux.sample.controllers.responses.RestApiMessages
 
 @RestController
 public class RepositoryDetailsController {
-    @Autowired
-    private RepositoryDetailsService repositoryDetailsService;
+    private final RepositoryDetailsService repositoryDetailsService;
+
+    public RepositoryDetailsController(RepositoryDetailsService repositoryDetailsService) {
+        this.repositoryDetailsService = repositoryDetailsService;
+    }
 
     @GetMapping("/repositories/{owner}/{repositoryName}")
     public Mono<ResponseEntity<String>> getRepositoryDetails(@PathVariable String owner, @PathVariable String repositoryName) {

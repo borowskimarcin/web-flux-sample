@@ -44,7 +44,7 @@ public class Response {
     }
 
     private static class NotFoundResponse {
-        private final int status = HttpStatus.OK.value();
+        private final int status = HttpStatus.NOT_FOUND.value();
         private final String message;
 
         NotFoundResponse(String message) {
