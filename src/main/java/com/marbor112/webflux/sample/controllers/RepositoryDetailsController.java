@@ -18,7 +18,6 @@ import static com.marbor112.webflux.sample.controllers.responses.RestApiMessages
 public class RepositoryDetailsController {
     @Autowired
     private RepositoryDetailsService repositoryDetailsService;
-    private final Converter converter = new Converter();
 
     @GetMapping("/repositories/{owner}/{repositoryName}")
     public Mono<ResponseEntity<String>> getRepositoryDetails(@PathVariable String owner, @PathVariable String repositoryName) {
