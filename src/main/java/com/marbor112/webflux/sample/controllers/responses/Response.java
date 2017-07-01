@@ -9,22 +9,20 @@ import org.springframework.http.ResponseEntity;
 /**
  * Created by SG0221151 on 7/1/2017.
  */
-public class Response{
+public class Response {
     private static final Converter DEFAULT_CONVERTER = new JsonConverter();
 
     public static <V> ResponseEntity<String> ok(V input) {
-        String result = DEFAULT_CONVERTER.convert(new OkResponse<>(input));
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return ok(input, DEFAULT_CONVERTER);
+    }
+
+    public static ResponseEntity<String> notFound(String message) {
+        return notFound(message, DEFAULT_CONVERTER);
     }
 
     public static <V> ResponseEntity<String> ok(V input, Converter converter) {
         String result = converter.convert(new OkResponse<>(input));
         return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
-    public static ResponseEntity<String> notFound(String message) {
-        String result = DEFAULT_CONVERTER.convert(new NotFoundResponse(message));
-        return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
     }
 
     public static ResponseEntity<String> notFound(String message, Converter converter) {
