@@ -1,11 +1,11 @@
-package com.marbor112.webflux.sample.controllers;
+package com.marbor112.webflux.sample.controllers.responses;
 
 /**
  * Created by SG0221151 on 7/1/2017.
  */
 public enum RestApiMessages {
-    RESOURCE_NOT_FOUND("Resource not found"),
-    SUCCESS("Success");
+    RESOURCE_NOT_FOUND("Resource not found");
+
     private final String message;
 
     RestApiMessages(String message)
