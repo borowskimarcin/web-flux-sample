@@ -2,6 +2,7 @@ package com.marbor112.webflux.sample.services;
 
 import com.marbor112.webflux.sample.domain.RepositoryDetails;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -20,6 +21,7 @@ public class RepositoryDetailsService {
 
     private final WebClient webClient = WebClient.create();
 
+    @Cacheable("repositories")
     public Mono<Optional<RepositoryDetails>> retrieve(String owner, String repositoryName) {
         return webClient
                 .get()
