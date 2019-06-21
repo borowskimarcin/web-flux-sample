@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
  */
 @Service
 public class GithubRepositoryDetailsRetriever implements Retriever<GithubParams, Mono<Either<HttpStatus, RepositoryDetails>>> {
-    public static final String PATH_SEPERATOR = "/";
+    private static final String PATH_SEPARATOR = "/";
     private final String repositoryDetailsGithubApiUrl;
     private final WebClient webClient;
     private final ToRepositoryDetailsConverter converter;
@@ -42,7 +42,7 @@ public class GithubRepositoryDetailsRetriever implements Retriever<GithubParams,
     public Mono<Either<HttpStatus, RepositoryDetails>> retrieve(GithubParams githubParams) {
         return webClient
                 .get()
-                .uri(repositoryDetailsGithubApiUrl + PATH_SEPERATOR + githubParams.getOwner() + PATH_SEPERATOR + githubParams.getRepositoryName())
+                .uri(repositoryDetailsGithubApiUrl + PATH_SEPARATOR + githubParams.getOwner() + PATH_SEPARATOR + githubParams.getRepositoryName())
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .flatMap(this::handleResponse);
