@@ -3,6 +3,8 @@ package com.marbor112.webflux.sample.controllers;
 import com.marbor112.webflux.sample.domain.RepositoryDetails;
 import com.marbor112.webflux.sample.services.GithubParams;
 import com.marbor112.webflux.sample.services.GithubRepositoryDetailsRetriever;
+import com.marbor112.webflux.sample.services.Retriever;
+import io.vavr.control.Either;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,13 +14,13 @@ import reactor.core.publisher.Mono;
 
 @RestController
 public class RepositoryDetailsController {
-    private final GithubRepositoryDetailsRetriever githubRepositoryDetailsRetriever;
+    private final Retriever<GithubParams, Mono<Either<HttpStatus, RepositoryDetails>>> githubRepositoryDetailsRetriever;
 
-    public RepositoryDetailsController(GithubRepositoryDetailsRetriever githubRepositoryDetailsRetriever) {
+    public RepositoryDetailsController(Retriever<GithubParams, Mono<Either<HttpStatus, RepositoryDetails>>> githubRepositoryDetailsRetriever) {
         this.githubRepositoryDetailsRetriever = githubRepositoryDetailsRetriever;
     }
 
-    @GetMapping("v1/repositories/{owner}/{repositoryName}")
+    @GetMapping({"v1/repositories/{owner}/{repositoryName}"})
     public Mono<ResponseEntity<RepositoryDetails>> getRepositoryDetails(@PathVariable String owner, @PathVariable String repositoryName) {
         return githubRepositoryDetailsRetriever.retrieve(new GithubParams(owner, repositoryName))
                 .map(either -> {
