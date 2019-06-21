@@ -18,17 +18,18 @@ import reactor.core.publisher.Mono;
  * Created by Marcin on 6/7/2017.
  */
 @Service
-public class RepositoryDetailsService {
+public class GithubRepositoryDetailsRetriever implements Retriever<GithubParams, Mono<Either<HttpStatus, RepositoryDetails>>> {
+    public static final String PATH_SEPERATOR = "/";
     private final String repositoryDetailsGithubApiUrl;
     private final WebClient webClient;
     private final ToRepositoryDetailsConverter converter;
 
     @Autowired
-    public RepositoryDetailsService(@Value("${api.url.github.repository.details}") String repositoryDetailsGithubApiUrl) {
+    public GithubRepositoryDetailsRetriever(@Value("${api.url.github.repository.details}") String repositoryDetailsGithubApiUrl) {
         this(repositoryDetailsGithubApiUrl, WebClient.create(), new ToRepositoryDetailsConverter());
     }
 
-    public RepositoryDetailsService(
+    public GithubRepositoryDetailsRetriever(
             @Value("${api.url.github.repository.details}") String repositoryDetailsGithubApiUrl,
             WebClient webClient,
             ToRepositoryDetailsConverter converter) {
@@ -38,10 +39,10 @@ public class RepositoryDetailsService {
     }
 
     @Cacheable("repositories")
-    public Mono<Either<HttpStatus, RepositoryDetails>> retrieve(String owner, String repositoryName) {
+    public Mono<Either<HttpStatus, RepositoryDetails>> retrieve(GithubParams githubParams) {
         return webClient
                 .get()
-                .uri(repositoryDetailsGithubApiUrl + "/" + owner + "/" + repositoryName)
+                .uri(repositoryDetailsGithubApiUrl + PATH_SEPERATOR + githubParams.getOwner() + PATH_SEPERATOR + githubParams.getRepositoryName())
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .flatMap(this::handleResponse);

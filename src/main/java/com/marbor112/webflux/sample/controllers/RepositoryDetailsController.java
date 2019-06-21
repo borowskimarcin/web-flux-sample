@@ -1,7 +1,8 @@
 package com.marbor112.webflux.sample.controllers;
 
 import com.marbor112.webflux.sample.domain.RepositoryDetails;
-import com.marbor112.webflux.sample.services.RepositoryDetailsService;
+import com.marbor112.webflux.sample.services.GithubParams;
+import com.marbor112.webflux.sample.services.GithubRepositoryDetailsRetriever;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,21 +12,21 @@ import reactor.core.publisher.Mono;
 
 @RestController
 public class RepositoryDetailsController {
-    private final RepositoryDetailsService repositoryDetailsService;
+    private final GithubRepositoryDetailsRetriever githubRepositoryDetailsRetriever;
 
-    public RepositoryDetailsController(RepositoryDetailsService repositoryDetailsService) {
-        this.repositoryDetailsService = repositoryDetailsService;
+    public RepositoryDetailsController(GithubRepositoryDetailsRetriever githubRepositoryDetailsRetriever) {
+        this.githubRepositoryDetailsRetriever = githubRepositoryDetailsRetriever;
     }
 
-    @GetMapping("/repositories/{owner}/{repositoryName}")
+    @GetMapping("v1/repositories/{owner}/{repositoryName}")
     public Mono<ResponseEntity<RepositoryDetails>> getRepositoryDetails(@PathVariable String owner, @PathVariable String repositoryName) {
-        return repositoryDetailsService.retrieve(owner, repositoryName)
+        return githubRepositoryDetailsRetriever.retrieve(new GithubParams(owner, repositoryName))
                 .map(either -> {
                             if (either.isLeft()) {
-                                HttpStatus status = either.getLeft();
+                                final HttpStatus status = either.getLeft();
                                 return ResponseEntity.status(status).build();
                             } else {
-                                RepositoryDetails repositoryDetails = either.swap().getLeft();
+                                final RepositoryDetails repositoryDetails = either.swap().getLeft();
                                 return ResponseEntity.ok(repositoryDetails);
                             }
                         }
